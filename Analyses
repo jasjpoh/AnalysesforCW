@@ -1,0 +1,41 @@
+%matplotlib
+import pandas as pd
+conda install openpyxl
+data = pd.read_excel('file_location', header=0, skiprows=list(range(1,10)), sheet_name='Speed', index_col=1)
+data.index = pd.to_datetime(data.index, dayfirst=True)
+ def addDayCol(df): 
+   ...:     data = df.copy() 
+   ...:     days = [] 
+   ...:     start = (data.index[0].hour, data.index[0].minute, data.index[0].second) 
+   ...:     day = 1 
+   ...:     for i in range(len(data.index)): 
+   ...:         time = data.index[i] 
+   ...:         current = (time.hour, time.minute, time.second) 
+   ...:         days.append(day) 
+   ...:         if current == start and i != 0: 
+   ...:             day += 1 
+   ...:     data['Day'] = days 
+   ...:     return data 
+   data_wDay = addDayCol(data)
+   data_day = data_wDay.groupby(['Day'])
+   dataspeed = data_day.mean()
+   dataspeed.to_csv('Speed.csv')
+   data = pd.read_excel('file_location', header=0, skiprows=list(range(1,10)), sheet_name='Interval Distance', index_col=1)
+data.index = pd.to_datetime(data.index, dayfirst=True)
+ def addDayCol(df): 
+   ...:     data = df.copy() 
+   ...:     days = [] 
+   ...:     start = (data.index[0].hour, data.index[0].minute, data.index[0].second) 
+   ...:     day = 1 
+   ...:     for i in range(len(data.index)): 
+   ...:         time = data.index[i] 
+   ...:         current = (time.hour, time.minute, time.second) 
+   ...:         days.append(day) 
+   ...:         if current == start and i != 0: 
+   ...:             day += 1 
+   ...:     data['Day'] = days 
+   ...:     return data 
+   data_wDay = addDayCol(data)
+   data_day = data_wDay.groupby(['Day']).sum()
+   datacumdis = data_day.cumsum()
+   datacumdis.to_csv('Cumsum.csv')
